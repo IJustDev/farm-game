@@ -1,2 +1,5 @@
-gcc -o game game.c -I/usr/local/include/SDL2 -L/usr/local/lib -lSDL2 -lSDL2_ttf -framework Cocoa -framework OpenGL -framework QuartzCore && ./sdl2_example
-
+gcc src/*.c -o game \
+    -Iinclude \
+    -L/usr/lib \
+    -lSDL2 -lSDL2_ttf -lSDL2_image \
+    && ./game
