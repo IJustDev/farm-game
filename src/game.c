@@ -2,6 +2,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "player.h"
 #include "inventory.h"
+#include "sprite.h"
 
 void draw_player(SDL_Renderer* renderer, Player* player) {
     SDL_Rect rect = { player->x, player->y, 32, 32 };  // x, y, Breite, Höhe
@@ -17,8 +18,8 @@ void draw_item(SDL_Renderer* renderer, int index, ItemStack* itemStack, TTF_Font
     // Text nur rendern, wenn ein Item vorhanden ist
     if (itemStack->item != NULL) {
         SDL_Color textColor = {255, 255, 255, 255};
-        char item[8];
-        snprintf(item, 8, "%d", itemStack->amount);
+        char item[sizeof(int)];
+        snprintf(item, sizeof(int), "%d", itemStack->amount);
         SDL_Surface* textSurface = TTF_RenderText_Solid(font, item, textColor);
 
         if (!textSurface) {
@@ -42,5 +43,12 @@ void draw_inventory(SDL_Renderer* renderer, TTF_Font* font, Inventory* inventory
     for (int i = 0; i < INVENTORY_COLS; i++) {
         draw_item(renderer, i, &inventory->items[i], font);
     }
+}
+
+void draw_map(SDL_Renderer* renderer, SpriteSheet* spritesheet) {
+	render_sprite(renderer, spritesheet, GRASS_TL, 0,0);
+	render_sprite(renderer, spritesheet, GRASS_TR, 32,0);
+	render_sprite(renderer, spritesheet, GRASS_BL, 0,32);
+	render_sprite(renderer, spritesheet, GRASS_BR, 32,32);
 }
 

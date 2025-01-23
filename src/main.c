@@ -4,6 +4,7 @@
 #include "inventory.h"
 #include "game.h"
 #include "input.h"
+#include "sprite.h"
 
 int main() {
     if (SDL_Init(SDL_INIT_VIDEO) != 0 || TTF_Init() == -1) {
@@ -21,6 +22,8 @@ int main() {
         return 1;
     }
 
+    SpriteSheet* sheet = load_spritesheet(renderer);
+
     Player* player = create_player("Player One");
     Inventory* inventory = create_inventory();
 
@@ -35,6 +38,7 @@ int main() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
+	draw_map(renderer, sheet);
         draw_player(renderer, player);
         draw_inventory(renderer, font, inventory);
 

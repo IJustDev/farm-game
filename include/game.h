@@ -5,10 +5,12 @@
 #include <SDL2/SDL_ttf.h>
 #include "player.h"
 #include "inventory.h"
+#include "sprite.h"
 
 void draw_player(SDL_Renderer* renderer, Player* player);
 void draw_item(SDL_Renderer* renderer, int index, ItemStack* itemStack, TTF_Font* font);
 void draw_inventory(SDL_Renderer* renderer, TTF_Font* font, Inventory* inventory);
+void draw_map(SDL_Renderer* renderer, SpriteSheet* spritesheet);
 
 #endif
 
