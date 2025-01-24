@@ -7,6 +7,7 @@
 #include "sprite.h"
 
 int main() {
+    initialize_items();
     if (SDL_Init(SDL_INIT_VIDEO) != 0 || TTF_Init() == -1) {
         printf("SDL konnte nicht initialisiert werden: %s\n", SDL_GetError());
         return 1;
@@ -40,7 +41,7 @@ int main() {
 
 	draw_map(renderer, sheet);
         draw_player(renderer, player);
-        draw_inventory(renderer, font, inventory);
+        draw_inventory(renderer, sheet, font, inventory);
 
         SDL_RenderPresent(renderer);
     }

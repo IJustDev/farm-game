@@ -23,6 +23,9 @@ void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inv
                 case SDLK_d: // Rechts
                     player->x += VELOCITY;
                     break;
+                case SDLK_f: // Gegenstand aufnehmen
+                    collect_item(inventory, create_item(ITEM_HP)); // Beispiel: Axe sammeln
+                    break;
                 case SDLK_e: // Gegenstand aufnehmen
                     collect_item(inventory, create_item(ITEM_AXE)); // Beispiel: Axe sammeln
                     break;

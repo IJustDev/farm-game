@@ -3,14 +3,14 @@
 
 #include <SDL2/SDL.h>
 
-#define SPRITE_SIZE 16
+#define SPRITE_SIZE 32
 
 #define GRASS_TL 0
 #define GRASS_TR 1
 #define GRASS_BL 15
 #define GRASS_BR 16
 
-#define SPRITESHEET_PATH "assets/sprites/Spring Tile.png"
+#define SPRITESHEET_PATH "assets/sprites/tools.png"
 
 typedef struct {
 	SDL_Texture* texture;
