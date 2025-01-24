@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include "player.h"
 #include "inventory.h"
+#include "game.h"
 
 // Verarbeitet Tastatureingaben
 void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inventory) {
@@ -23,15 +24,6 @@ void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inv
                 case SDLK_d: // Rechts
                     player->x += VELOCITY;
                     break;
-                case SDLK_f: // Gegenstand aufnehmen
-                    collect_item(inventory, create_item(ITEM_HP)); // Beispiel: Axe sammeln
-                    break;
-                case SDLK_e: // Gegenstand aufnehmen
-                    collect_item(inventory, create_item(ITEM_AXE)); // Beispiel: Axe sammeln
-                    break;
-                case SDLK_q: // Gegenstand aufnehmen
-                    collect_item(inventory, create_item(ITEM_SHOVEL)); // Beispiel: Shovel sammeln
-                    break;
                 case SDLK_ESCAPE: // Spiel beenden
                     *running = 0;
                     break;
@@ -47,5 +39,6 @@ void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inv
         default:
             break;
     }
+    check_collision();
 }
 

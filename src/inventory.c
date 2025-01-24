@@ -23,6 +23,7 @@ void initialize_items() {
     register_tool(ITEM_SHOVEL, "Shovel", 0, MATERIAL_DIRT, 200);
     register_tool(ITEM_AXE, "Axe", 1, MATERIAL_WOOD, 200);
     register_item(ITEM_HP, "HP", 11);
+    register_item(ITEM_WATER, "Water", 12);
 }
 
 Inventory* create_inventory() {

@@ -4,6 +4,9 @@
 #include "inventory.h"
 #include "sprite.h"
 
+Player* player;
+Inventory* inventory;
+
 void draw_player(SDL_Renderer* renderer, Player* player) {
     SDL_Rect rect = { player->x, player->y, 32, 32 };  // x, y, Breite, Höhe
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Rot
@@ -43,7 +46,7 @@ void draw_item(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, int index, Ite
     }
 }
 
-void draw_inventory(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, TTF_Font* font, Inventory* inventory) {
+void draw_inventory(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, TTF_Font* font) {
     SDL_Rect rect = {200, 500, 405, 48};
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderDrawRect(renderer, &rect);
@@ -52,10 +55,50 @@ void draw_inventory(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, TTF_Font*
     }
 }
 
-void draw_map(SDL_Renderer* renderer, SpriteSheet* spritesheet) {
-	render_sprite(renderer, spritesheet, GRASS_TL, 0,0);
-	render_sprite(renderer, spritesheet, GRASS_TR, 32,0);
-	render_sprite(renderer, spritesheet, GRASS_BL, 0,32);
-	render_sprite(renderer, spritesheet, GRASS_BR, 32,32);
+typedef struct {
+    int x;
+    int y;
+    Item* item;
+} DroppedItemStack;
+
+DroppedItemStack dropped_items[32];
+
+void drop_item(int index, int x, int y, int item) {
+    dropped_items[index].x = x;
+    dropped_items[index].y = y;
+    dropped_items[index].item = create_item(item);
+}
+
+void initialize_game() {
+    initialize_items();
+    player = create_player("Player One");
+    inventory = create_inventory();
+    drop_item(0, 96, 96, ITEM_HP);
+    drop_item(1, 96, 96, ITEM_HP);
+    drop_item(2, 96, 96, ITEM_HP);
+    drop_item(3, 96, 96, ITEM_HP);
+    drop_item(2, 192, 96, ITEM_WATER);
+    drop_item(4, 128, 256, ITEM_AXE);
+    drop_item(5, 384, 128, ITEM_SHOVEL);
+    drop_item(6, 416, 128, ITEM_SHOVEL);
+}
+
+void check_collision() {
+    for (int i = 0; i != 32; i++) {
+        if (dropped_items[i].item == NULL) continue;
+        DroppedItemStack dropped = dropped_items[i];
+        if (player->x >= dropped.x && player->x <= dropped.x + 32 && player->y >= dropped.y && player->y <= dropped.y + 32) {
+            collect_item(inventory, dropped_items[i].item);
+            dropped_items[i].item = NULL;
+        }
+    }
+}
+
+void draw_map(SDL_Renderer* renderer, SpriteSheet* sprite_sheet) {
+    for (int i = 0; i != 32; i++) {
+        if (dropped_items[i].item == NULL) continue;
+        DroppedItemStack dropped = dropped_items[i];
+        render_sprite(renderer, sprite_sheet, dropped.item->definition.sprite_index, dropped.x, dropped.y);
+    }
 }
 

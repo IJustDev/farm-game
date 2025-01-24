@@ -10,6 +10,7 @@
 #define ITEM_AXE 1
 #define ITEM_SWORD 2
 #define ITEM_HP 3
+#define ITEM_WATER 4
 
 #define MATERIAL_WOOD 0
 #define MATERIAL_STONE 1

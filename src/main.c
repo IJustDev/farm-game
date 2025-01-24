@@ -7,7 +7,7 @@
 #include "sprite.h"
 
 int main() {
-    initialize_items();
+    initialize_game();
     if (SDL_Init(SDL_INIT_VIDEO) != 0 || TTF_Init() == -1) {
         printf("SDL konnte nicht initialisiert werden: %s\n", SDL_GetError());
         return 1;
@@ -25,9 +25,6 @@ int main() {
 
     SpriteSheet* sheet = load_spritesheet(renderer);
 
-    Player* player = create_player("Player One");
-    Inventory* inventory = create_inventory();
-
     SDL_Event e;
     int running = 1;
 
@@ -39,15 +36,15 @@ int main() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-	draw_map(renderer, sheet);
+        draw_map(renderer, sheet);
         draw_player(renderer, player);
-        draw_inventory(renderer, sheet, font, inventory);
+        draw_inventory(renderer, sheet, font);
 
         SDL_RenderPresent(renderer);
     }
 
-    free_player(player);
-    free_inventory(inventory);
+    // free_player(player);
+    // free_inventory(inventory);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_CloseFont(font);
