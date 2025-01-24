@@ -7,10 +7,8 @@
 Player* player;
 Inventory* inventory;
 
-void draw_player(SDL_Renderer* renderer, Player* player) {
-    SDL_Rect rect = { player->x, player->y, 32, 32 };  // x, y, Breite, Höhe
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Rot
-    SDL_RenderFillRect(renderer, &rect); // Rechteck füllen
+void draw_player(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, Player* player) {
+    render_scaled_sprite(renderer, sprite_sheet, PLAYER_SPRITE, player->x, player->y, 2);
 }
 
 void draw_count(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, int index, ItemStack* itemStack, TTF_Font* font) {
@@ -87,7 +85,7 @@ void check_collision() {
     for (int i = 0; i != 32; i++) {
         if (dropped_items[i].item == NULL) continue;
         DroppedItemStack dropped = dropped_items[i];
-        if (player->x >= dropped.x && player->x <= dropped.x + 32 && player->y >= dropped.y && player->y <= dropped.y + 32) {
+        if (player->x + 32 >= dropped.x && player->x <= dropped.x + 32 && player->y + 32 >= dropped.y && player->y <= dropped.y + 32) {
             collect_item(inventory, dropped_items[i].item);
             dropped_items[i].item = NULL;
         }

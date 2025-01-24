@@ -37,7 +37,7 @@ int main() {
         SDL_RenderClear(renderer);
 
         draw_map(renderer, sheet);
-        draw_player(renderer, player);
+        draw_player(renderer, sheet, player);
         draw_inventory(renderer, sheet, font);
 
         SDL_RenderPresent(renderer);

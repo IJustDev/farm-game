@@ -5,6 +5,8 @@
 
 #define VELOCITY 16
 
+#define PLAYER_SPRITE 90
+
 typedef struct {
     char* name;
     int x, y;

@@ -20,7 +20,7 @@ SpriteSheet* load_spritesheet(SDL_Renderer* renderer) {
 	return spritesheet;
 }
 
-void render_sprite(SDL_Renderer* renderer, SpriteSheet* spritesheet, int sprite_index, int x, int y) {
+void render_scaled_sprite(SDL_Renderer* renderer, SpriteSheet* spritesheet, int sprite_index, int x, int y, int scale) {
 	if (!spritesheet || !renderer) return;
 	int sheet_width, sheet_height;
 	SDL_QueryTexture(spritesheet->texture, NULL, NULL, &sheet_width, &sheet_height);
@@ -30,9 +30,13 @@ void render_sprite(SDL_Renderer* renderer, SpriteSheet* spritesheet, int sprite_
 	int src_x = (sprite_index % columns) * SPRITE_SIZE;
 	int src_y = (sprite_index / columns) * SPRITE_SIZE;
 	SDL_Rect src_rect = {src_x, src_y, SPRITE_SIZE, SPRITE_SIZE};
-	SDL_Rect dest_rect = {x, y, SPRITE_SIZE, SPRITE_SIZE};
+	SDL_Rect dest_rect = {x, y, SPRITE_SIZE * scale, SPRITE_SIZE * scale};
 	
 	SDL_RenderCopy(renderer, spritesheet->texture, &src_rect, &dest_rect);
+}
+
+void render_sprite(SDL_Renderer* renderer, SpriteSheet* spritesheet, int sprite_index, int x, int y) {
+	render_scaled_sprite(renderer, spritesheet, sprite_index, x, y, 1);
 }
 
 void free_spritesheet(SpriteSheet* sheet) {
