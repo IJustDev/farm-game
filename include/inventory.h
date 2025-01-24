@@ -16,6 +16,9 @@
 #define MATERIAL_STONE 1
 #define MATERIAL_DIRT 2
 
+extern int selected;
+void select(int index);
+
 typedef struct {
     int id;
     char name[32];

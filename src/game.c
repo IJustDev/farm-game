@@ -32,7 +32,10 @@ void draw_count(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, int index, It
 
 void draw_item(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, int index, ItemStack* itemStack, TTF_Font* font) {
     SDL_Rect rect = {200 + index * 45, 500, 45, 48};
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    if (index == selected) {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    } else
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderDrawRect(renderer, &rect);
 
     // Text nur rendern, wenn ein Item vorhanden ist

@@ -5,6 +5,11 @@
 
 ItemDefinition item_definitions[32];
 
+int selected = 0;
+void select(int index) {
+    selected = index;
+}
+
 void register_item(int id, const char* name, int sprite_index) {
     item_definitions[id].id = id;
     item_definitions[id].sprite_index = sprite_index;
