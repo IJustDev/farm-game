@@ -6,27 +6,10 @@
 
 #define MAX_STACK_SIZE 64
 
-#define ITEM_SHOVEL 0
-#define ITEM_AXE 1
-#define ITEM_SWORD 2
-#define ITEM_HP 3
-#define ITEM_WATER 4
-
-#define MATERIAL_WOOD 0
-#define MATERIAL_STONE 1
-#define MATERIAL_DIRT 2
+#include "items.h"
 
 extern int selected;
 void select(int index);
-
-typedef struct {
-    int id;
-    char name[32];
-    int sprite_index;
-    int is_tool;
-    int material;
-    int max_uses;
-} ItemDefinition;
 
 typedef struct {
     ItemDefinition definition;
@@ -42,7 +25,6 @@ typedef struct {
     ItemStack items[INVENTORY_ROWS * INVENTORY_COLS];
 } Inventory;
 
-void initialize_items();
 Inventory* create_inventory();
 void free_inventory(Inventory* inventory);
 int collect_item(Inventory* inventory, Item* item);
