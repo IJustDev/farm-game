@@ -40,7 +40,7 @@ void draw_item(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, int index, Ite
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     } else
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderDrawRect(renderer, &rect);
+        SDL_RenderDrawRect(renderer, &rect);
 
     // Text nur rendern, wenn ein Item vorhanden ist
     if (itemStack->item != NULL) {
@@ -143,8 +143,7 @@ void update() {
         while (SDL_PollEvent(&e)) {
             handle_input(&e, &running, player, inventory);
         }
-	player->x = player->x += player->moves_x * VELOCITY;
-	player->y = player->y += player->moves_y * VELOCITY;
+    player_update(player);
 	check_collision();
 }
 

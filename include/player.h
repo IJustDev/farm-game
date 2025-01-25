@@ -16,4 +16,6 @@ typedef struct {
 Player* create_player(const char* name);
 void free_player(Player* player);
 
+void player_update(Player* player);
+
 #endif
