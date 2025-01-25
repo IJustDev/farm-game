@@ -4,6 +4,7 @@
 #include "inventory.h"
 #include "input.h"
 #include "sprite.h"
+#include "dialog.h"
 
 Player* player;
 Inventory* inventory;
@@ -98,6 +99,34 @@ void check_collision() {
     }
 }
 
+int count = 0;
+
+void draw_text(SDL_Renderer *renderer, TTF_Font* font, int x, int y, char* text) {
+    SDL_Color textColor = {255, 255, 255, 255};
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, textColor);
+
+    if (!textSurface) {
+        printf("Fehler beim Erstellen der Text-Oberfläche: %s\n", TTF_GetError());
+        return;
+    }
+
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_Rect textRect = {x, y, textSurface->w, textSurface->h};
+
+    SDL_FreeSurface(textSurface);
+    SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+    SDL_DestroyTexture(textTexture);
+}
+
+void draw_dialog(SDL_Renderer *renderer, SpriteSheet* sprite_sheet, TTF_Font* font) {
+    if (has_dialog() == 1) {
+            SDL_Rect rect = {200, 400, 405, 48};
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            SDL_RenderDrawRect(renderer, &rect);
+            draw_text(renderer, font, 220, 420, get_dialog());
+        }
+}
+
 void draw_map(SDL_Renderer* renderer, SpriteSheet* sprite_sheet) {
     for (int i = 0; i != 32; i++) {
         if (dropped_items[i].item == NULL) continue;
@@ -107,6 +136,9 @@ void draw_map(SDL_Renderer* renderer, SpriteSheet* sprite_sheet) {
 }
 
 void update() {
+    if (count == 0 || count > 1800) {
+        show_dialog("Hallo Welt");
+    }
     SDL_Event e;
         while (SDL_PollEvent(&e)) {
             handle_input(&e, &running, player, inventory);
@@ -123,23 +155,26 @@ void render(SDL_Renderer *renderer, SpriteSheet* sheet, TTF_Font* font) {
         draw_map(renderer, sheet);
         draw_player(renderer, sheet, player);
         draw_inventory(renderer, sheet, font);
+        draw_dialog(renderer, sheet, font);
 
         SDL_RenderPresent(renderer);
 }
 
 void game_loop(SDL_Renderer *renderer, SpriteSheet* sheet, TTF_Font* font) {
-unsigned int a = SDL_GetTicks();
-unsigned int b = SDL_GetTicks();
-double delta = 0;
-while (running) {
-	a = SDL_GetTicks();
-	delta += a - b;
-	if (delta > 1000/60.0) {
-		update();
-		render(renderer, sheet, font);
+    unsigned int a = SDL_GetTicks();
+    unsigned int b = SDL_GetTicks();
+    double delta = 0;
+    while (running) {
+        a = SDL_GetTicks();
+        delta += a - b;
+        if (delta > 1000/60.0) {
+            update();
+            render(renderer, sheet, font);
 
-		delta = 0;
-	}
-	b = SDL_GetTicks();
-}
+            delta = 0;
+            count ++;
+        }
+        b = SDL_GetTicks();
+
+    }
 }

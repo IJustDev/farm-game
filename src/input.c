@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include "player.h"
 #include "inventory.h"
+#include "dialog.h"
 #include "game.h"
 
 // Verarbeitet Tastatureingaben
@@ -24,6 +25,9 @@ void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inv
 		break;
         case SDL_KEYDOWN: // Taste gedrückt
             switch (event->key.keysym.sym) {
+                case SDLK_f:
+                    close_dialog();
+                    break;
                 case SDLK_1:
                     select(0);
                     break;
