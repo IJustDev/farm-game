@@ -5,6 +5,8 @@
 
 #define SPRITE_SIZE 32
 
+#define DEFAULT_SCALE 1
+
 #define SPRITESHEET_PATH "assets/sprites/tools.png"
 
 typedef struct {

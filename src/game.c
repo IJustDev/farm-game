@@ -12,7 +12,7 @@ Inventory* inventory;
 int running = 1;
 
 void draw_player(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, Player* player) {
-    render_scaled_sprite(renderer, sprite_sheet, PLAYER_SPRITE, player->x, player->y, 2);
+    render_scaled_sprite(renderer, sprite_sheet, PLAYER_SPRITE, player->x, player->y, 1);
 }
 
 void draw_count(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, int index, ItemStack* itemStack, TTF_Font* font) {
@@ -89,6 +89,9 @@ void initialize_game() {
 }
 
 void check_collision() {
+    if (player->x >= 192 && player->x <= 192 + 32 && player->y >= 192 && player->y <= 192 + 32) {
+        show_dialog("This is a sign.");
+    }
     for (int i = 0; i != 32; i++) {
         if (dropped_items[i].item == NULL) continue;
         DroppedItemStack dropped = dropped_items[i];
@@ -98,8 +101,6 @@ void check_collision() {
         }
     }
 }
-
-int count = 0;
 
 void draw_text(SDL_Renderer *renderer, TTF_Font* font, int x, int y, char* text) {
     SDL_Color textColor = {255, 255, 255, 255};
@@ -127,7 +128,34 @@ void draw_dialog(SDL_Renderer *renderer, SpriteSheet* sprite_sheet, TTF_Font* fo
         }
 }
 
+int map[13][12] = {
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+    {101,101,101,101,101,101,101,101,101,101,101,101, 101, 101},
+};
 void draw_map(SDL_Renderer* renderer, SpriteSheet* sprite_sheet) {
+    for (int y = 0; y < 12; y++) {
+        for (int x = 0; x < 13; x++) {
+            int tile = map[y][x];
+
+            if (tile == 100) {
+                if (x  % 3 == 0) {
+                    tile = 102;
+                }
+            }
+            render_scaled_sprite(renderer, sprite_sheet, tile, x * 64, y * 64, 1);
+        }
+
+    }
     for (int i = 0; i != 32; i++) {
         if (dropped_items[i].item == NULL) continue;
         DroppedItemStack dropped = dropped_items[i];
@@ -136,9 +164,6 @@ void draw_map(SDL_Renderer* renderer, SpriteSheet* sprite_sheet) {
 }
 
 void update() {
-    if (count == 0 || count > 1800) {
-        show_dialog("Hallo Welt");
-    }
     SDL_Event e;
         while (SDL_PollEvent(&e)) {
             handle_input(&e, &running, player, inventory);
@@ -156,6 +181,9 @@ void render(SDL_Renderer *renderer, SpriteSheet* sheet, TTF_Font* font) {
         draw_inventory(renderer, sheet, font);
         draw_dialog(renderer, sheet, font);
 
+        render_sprite(renderer, sheet, 131, 128, 128);
+        render_sprite(renderer, sheet, 133, 192, 192);
+
         SDL_RenderPresent(renderer);
 }
 
@@ -171,7 +199,6 @@ void game_loop(SDL_Renderer *renderer, SpriteSheet* sheet, TTF_Font* font) {
             render(renderer, sheet, font);
 
             delta = 0;
-            count ++;
         }
         b = SDL_GetTicks();
 
