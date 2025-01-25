@@ -113,6 +113,7 @@ void update() {
         }
 	player->x = player->x += player->moves_x * VELOCITY;
 	player->y = player->y += player->moves_y * VELOCITY;
+	check_collision();
 }
 
 void render(SDL_Renderer *renderer, SpriteSheet* sheet, TTF_Font* font) {

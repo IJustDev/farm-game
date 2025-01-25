@@ -74,6 +74,5 @@ void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inv
         default:
             break;
     }
-    check_collision();
 }
 
