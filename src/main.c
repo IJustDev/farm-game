@@ -25,23 +25,9 @@ int main() {
 
     SpriteSheet* sheet = load_spritesheet(renderer);
 
-    SDL_Event e;
     int running = 1;
 
-    while (running) {
-        while (SDL_PollEvent(&e)) {
-            handle_input(&e, &running, player, inventory);
-        }
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
-
-        draw_map(renderer, sheet);
-        draw_player(renderer, sheet, player);
-        draw_inventory(renderer, sheet, font);
-
-        SDL_RenderPresent(renderer);
-    }
+game_loop(renderer, sheet, font);
 
     // free_player(player);
     // free_inventory(inventory);

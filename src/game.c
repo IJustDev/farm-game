@@ -2,10 +2,13 @@
 #include <SDL2/SDL_ttf.h>
 #include "player.h"
 #include "inventory.h"
+#include "input.h"
 #include "sprite.h"
 
 Player* player;
 Inventory* inventory;
+
+int running = 1;
 
 void draw_player(SDL_Renderer* renderer, SpriteSheet* sprite_sheet, Player* player) {
     render_scaled_sprite(renderer, sprite_sheet, PLAYER_SPRITE, player->x, player->y, 2);
@@ -103,3 +106,39 @@ void draw_map(SDL_Renderer* renderer, SpriteSheet* sprite_sheet) {
     }
 }
 
+void update() {
+    SDL_Event e;
+        while (SDL_PollEvent(&e)) {
+            handle_input(&e, &running, player, inventory);
+        }
+	player->x = player->x += player->moves_x * VELOCITY;
+	player->y = player->y += player->moves_y * VELOCITY;
+}
+
+void render(SDL_Renderer *renderer, SpriteSheet* sheet, TTF_Font* font) {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        draw_map(renderer, sheet);
+        draw_player(renderer, sheet, player);
+        draw_inventory(renderer, sheet, font);
+
+        SDL_RenderPresent(renderer);
+}
+
+void game_loop(SDL_Renderer *renderer, SpriteSheet* sheet, TTF_Font* font) {
+unsigned int a = SDL_GetTicks();
+unsigned int b = SDL_GetTicks();
+double delta = 0;
+while (running) {
+	a = SDL_GetTicks();
+	delta += a - b;
+	if (delta > 1000/60.0) {
+		update();
+		render(renderer, sheet, font);
+
+		delta = 0;
+	}
+	b = SDL_GetTicks();
+}
+}

@@ -10,6 +10,18 @@ void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inv
             *running = 0;
             break;
 
+	case SDL_KEYUP:
+		switch(event->key.keysym.sym) {
+			case SDLK_w:
+			case SDLK_s:
+				player->moves_y = 0;
+				break;
+			case SDLK_a:
+			case SDLK_d:
+				player->moves_x = 0;
+				break;
+		}
+		break;
         case SDL_KEYDOWN: // Taste gedrückt
             switch (event->key.keysym.sym) {
                 case SDLK_1:
@@ -40,16 +52,16 @@ void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inv
                     select(8);
                     break;
                 case SDLK_w: // Hoch
-                    player->y -= VELOCITY;
+                    player->moves_y = -1;
                     break;
                 case SDLK_a: // Links
-                    player->x -= VELOCITY;
+			player->moves_x = -1;
                     break;
                 case SDLK_s: // Runter
-                    player->y += VELOCITY;
+			player->moves_y = 1;
                     break;
                 case SDLK_d: // Rechts
-                    player->x += VELOCITY;
+			player->moves_x = 1;
                     break;
                 case SDLK_ESCAPE: // Spiel beenden
                     *running = 0;
@@ -57,10 +69,6 @@ void handle_input(SDL_Event* event, int* running, Player* player, Inventory* inv
                 default:
                     break;
             }
-            break;
-
-        case SDL_KEYUP: // Taste losgelassen (falls benötigt)
-            printf("Taste losgelassen: %s\n", SDL_GetKeyName(event->key.keysym.sym));
             break;
 
         default:

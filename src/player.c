@@ -8,6 +8,8 @@ Player* create_player(const char* name) {
         player->name = strdup(name);
         player->x = 0;
         player->y = 0;
+	player->moves_x = 0;
+	player->moves_y = 0;
     }
     return player;
 }
